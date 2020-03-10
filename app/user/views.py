@@ -30,6 +30,7 @@ class ManagerUserApiView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         """
-            returns the object (model) instance of the current authenticated user
+            returns the object (model) instance of the current authenticated
+             user
         """
         return self.request.user

@@ -38,12 +38,16 @@ class PublicUserApiTest(TestCase):
         }
         res = self.client.post(CREATE_USER_URL, payload)
 
-        self.assertEquals(res.status_code, status.HTTP_201_CREATED)     # test user is created
+        # test user is created
+        self.assertEquals(res.status_code, status.HTTP_201_CREATED)
 
         user = get_user_model().objects.get(**res.data)
-        self.assertTrue(user.check_password(payload['password']))       # test user has the same password as in payload
 
-        self.assertNotIn('password', res.data)  # test password is not returned in response of self.client.post
+        # test user has the same password as in payload
+        self.assertTrue(user.check_password(payload['password']))
+
+        # test password is not returned in response of self.client.post
+        self.assertNotIn('password', res.data)
 
     def test_user_already_exists(self):
         """
@@ -53,14 +57,17 @@ class PublicUserApiTest(TestCase):
             'email': 'test@teamalif.com',
             'password': 'pass@123'
         }
-        create_user(**payload)      # created a user with the above payload
+        # create a user with the above payload
+        create_user(**payload)
 
-        res = self.client.post(CREATE_USER_URL, payload)    # requesting user creation for the existing email(payload)
+        # requesting user creation for the existing email(payload)
+        res = self.client.post(CREATE_USER_URL, payload)
         self.assertEquals(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_password_too_short(self):
         """
-        test the password is greater than 5 chars and user is not created in that case
+        test the password is greater than 5 chars and user is not created
+        in that case
         """
         payload = {
             'email': 'testemail@gmail.com',
@@ -69,7 +76,8 @@ class PublicUserApiTest(TestCase):
         res = self.client.post(CREATE_USER_URL, payload)
         self.assertEquals(res.status_code, status.HTTP_400_BAD_REQUEST)
 
-        user_exists = get_user_model().objects.filter(email='testemail@gmail.com').exists()
+        user_exists = get_user_model().objects.filter(email='testemail@gmail.'
+                                                            'com').exists()
 
         self.assertFalse(user_exists)
 
@@ -161,7 +169,8 @@ class PrivateUserApiTest(TestCase):
 
     def test_post_me_not_allowed(self):
         """
-            Test that POST request is not allowed to me url (only PUT or PATCH)
+            Test that POST request is not allowed to me url (only PUT
+            or PATCH)
         """
         res = self.client.post(ME_URL, {})
 
