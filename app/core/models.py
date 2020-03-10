@@ -8,7 +8,7 @@ class UserManager(BaseUserManager):
     A user manager that provides helper functions to created users
     """
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email, password, **extra_fields):
         """
         Function to create a user
         """
