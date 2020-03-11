@@ -7,7 +7,9 @@ from core.models import Tag
 from .serializers import TagSerializer
 
 
-class TagViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+class TagViewSet(viewsets.GenericViewSet,
+                 mixins.ListModelMixin,
+                 mixins.CreateModelMixin):
     """
         ViewSet for the tags
     """
@@ -22,3 +24,11 @@ class TagViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         :return: Tag objects for current user
         """
         return self.queryset.filter(user=self.request.user).order_by('-name')
+
+    def perform_create(self, serializer):
+        """
+        Override the create function to assign current user to the tag
+        :param serializer:
+        :return: Tag object created for current user
+        """
+        return serializer.save(user=self.request.user)
