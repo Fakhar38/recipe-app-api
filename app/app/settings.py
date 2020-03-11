@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'core',
     'user',
-    'recipe',
-]
+    'recipe',]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
