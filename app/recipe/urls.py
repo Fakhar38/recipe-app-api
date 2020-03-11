@@ -6,6 +6,7 @@ from django.urls import path, include
 
 router = DefaultRouter()
 router.register('tags', views.TagViewSet)
+router.register('ingredients', views.IngredientApiViewSet)
 
 app_name = 'recipe'
 
