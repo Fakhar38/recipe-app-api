@@ -35,7 +35,8 @@ class TagViewSet(viewsets.GenericViewSet,
 
 
 class IngredientApiViewSet(viewsets.GenericViewSet,
-                           mixins.ListModelMixin):
+                           mixins.ListModelMixin,
+                           mixins.CreateModelMixin):
     """
     ViewSet for Ingredients
     """
@@ -49,3 +50,9 @@ class IngredientApiViewSet(viewsets.GenericViewSet,
             Filters the ingredients for current user only
         """
         return self.queryset.filter(user=self.request.user).order_by('-name')
+
+    def perform_create(self, serializer):
+        """
+            Saves the current user as user for ingredient
+        """
+        return serializer.save(user=self.request.user)

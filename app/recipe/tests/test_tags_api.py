@@ -83,7 +83,8 @@ class PrivateTagApiTest(TestCase):
         payload = {'name': 'new_tag'}
 
         res = self.client.post(TAG_URL, payload)
-        exists = Tag.objects.filter(user=self.user).exists()
+        exists = Tag.objects.filter(user=self.user,
+                                    name=payload['name']).exists()
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertTrue(exists)
