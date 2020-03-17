@@ -60,8 +60,24 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Recipe.objects.all()
 
+    def _param_to_ints(self, querystring):
+        """
+        Converts string parameters list to integer list
+        """
+        return [int(str_id) for str_id in querystring.split(',')]
+
     def get_queryset(self):
-        return self.queryset.filter(user=self.request.user)
+        queryset = self.queryset
+        tags = self.request.query_params.get('tags')
+        ingredients = self.request.query_params.get('ingredients')
+        if tags:
+            tag_ids = self._param_to_ints(tags)
+            queryset = queryset.filter(tags__id__in=tag_ids)
+        if ingredients:
+            ing_ids = self._param_to_ints(ingredients)
+            queryset = queryset.filter(ingredients__id__in=ing_ids)
+
+        return queryset.filter(user=self.request.user)
 
     def get_serializer_class(self):
         """
